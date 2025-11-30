@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title><%= title || "Cursos Cortos" %></title>
+
+    <!-- Bootstrap -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Iconos -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" rel="stylesheet">
+
+    <!-- CSS personalizado -->
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+
+<body class="d-flex flex-column min-vh-100">
+
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary shadow-sm">
+        <div class="container">
+            <a class="navbar-brand fw-bold" href="/">
+                <i class="bi bi-journal-bookmark"></i> Cursos Cortos
+            </a>
+
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mainNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div class="collapse navbar-collapse" id="mainNav">
+                <ul class="navbar-nav ms-auto">
+
+                    <li class="nav-item">
+                        <a class="nav-link <%= activePage === 'inicio' ? 'active' : '' %>" href="/">Inicio</a>
+                    </li>
+
+                    <li class="nav-item">
+                        <a class="nav-link <%= activePage === 'cursos' ? 'active' : '' %>" href="/cursos">Cursos</a>
+                    </li>
+
+                    <% if (usuario) { %>
+                    <li class="nav-item">
+                        <a class="nav-link <%= activePage === 'perfil' ? 'active' : '' %>" href="/perfil">
+                            <%= usuario.nombre %>
+                        </a>
+                    </li>
+
+                    <li class="nav-item">
+                        <a class="btn btn-outline-light btn-sm ms-2" href="/logout">Cerrar sesión</a>
+                    </li>
+
+                    <% } else { %>
+                    <li class="nav-item">
+                        <a class="btn btn-light btn-sm ms-2" href="/login">Iniciar sesión</a>
+                    </li>
+                    <% } %>
+
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Loader -->
+    <div id="loader"
+        class="position-fixed top-0 start-0 w-100 h-100 d-flex align-items-center justify-content-center bg-white"
+        style="z-index: 2000; display: none;">
+        <div class="spinner-border text-primary" role="status" style="width: 3rem; height: 3rem;">
+            <span class="visually-hidden">Cargando...</span>
+        </div>
+    </div>
+
+    <main class="container my-4">
