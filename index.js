@@ -43,7 +43,6 @@ function requireLogin(req, res, next) {
 app.use("/", authRoutes);   
 app.use("/cursos", requireLogin, cursosRoutes);
 
-
 // Rutas principales
 app.get("/", requireLogin, (req, res) => {
   res.render("index", { 
@@ -51,6 +50,7 @@ app.get("/", requireLogin, (req, res) => {
     usuario: req.session.user 
   });
 });
+
 
 // Puerto
 const PORT = 3000;
