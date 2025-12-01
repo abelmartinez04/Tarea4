@@ -1,0 +1,45 @@
+/* Fondo general */
+.login-body {
+    background: linear-gradient(to right, #e3f2fd, #ffffff);
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Tarjeta del login */
+.login-container {
+    background: #fff;
+    width: 100%;
+    max-width: 420px;
+    padding: 40px;
+    border-radius: 12px;
+    animation: fadeIn 0.4s ease-in-out;
+}
+
+/* Iconos dentro del input */
+.login-icon {
+    position: absolute;
+    left: 15px;
+    top: 50%;
+    transform: translateY(-10%);
+    color: #0d6efd;
+    font-size: 1.2rem;
+}
+
+/* Inputs */
+.form-control {
+    border-radius: 8px !important;
+    padding-left: 45px !important;
+}
+
+/* Animación fade */
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* Texto inferior */
+.login-container p {
+    font-size: 0.95rem;
+}
