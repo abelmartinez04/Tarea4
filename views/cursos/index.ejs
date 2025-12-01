@@ -1,0 +1,42 @@
+<%- include("../partials/header", { 
+    title: "Cursos",
+    activePage: "cursos",
+    usuario: usuario 
+}) %>
+
+
+<main class="flex-grow-1 bg-light">
+  <div class="container py-4">
+
+    <section class="d-flex justify-content-between align-items-center mb-3">
+      <h3 class="m-0">Gestión de Cursos</h3>
+      <button id="btn-nuevo" class="btn btn-success">
+        <i class="bi bi-plus-circle"></i> Nuevo Curso
+      </button>
+    </section>
+
+    <section>
+      <div class="table-responsive bg-white p-3 shadow-sm rounded">
+        <table id="tabla-cursos" class="table table-hover align-middle">
+          <thead class="table-primary">
+            <tr>
+              <th>ID</th>
+              <th>Nombre</th>
+              <th>Duración (hrs)</th>
+              <th>Instructor</th>
+              <th>Precio</th>
+              <th>Acciones</th>
+            </tr>
+          </thead>
+          <tbody></tbody>
+        </table>
+      </div>
+    </section>
+
+  </div>
+</main>
+
+<script src="https://cdn.jsdelivr.net/npm/alertifyjs/build/alertify.min.js"></script>
+<script src="/js/cursos.js"></script>
+
+<%- include("../partials/footer") %>
