@@ -11,7 +11,6 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 
-
 app.use(
   session({
     secret: process.env.CLAVE_SESION || "clave_por_defecto",
@@ -22,6 +21,7 @@ app.use(
 
 // Importar rutas
 import authRoutes from "./routes/authRoutes.js";
+import cursosRoutes from "./routes/cursosRoutes.js";
 
 
 // Configurar EJS
@@ -41,6 +41,7 @@ function requireLogin(req, res, next) {
 
 // Registrar rutas
 app.use("/", authRoutes);   
+app.use("/cursos", requireLogin, cursosRoutes);
 
 
 // Rutas principales
