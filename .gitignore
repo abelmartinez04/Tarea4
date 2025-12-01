@@ -4,3 +4,5 @@ package.json
 /node_modules
 *.log
 .DS_Store
+/mochawesome-report/assets/
+# /mochawesome-report/mochawesome.json
