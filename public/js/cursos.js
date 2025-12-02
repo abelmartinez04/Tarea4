@@ -8,12 +8,12 @@ document.addEventListener("DOMContentLoaded", () => {
 
 function cargarCursos() {
   fetch("/cursos/listar")
-    .then(res => res.json())
-    .then(data => {
+    .then((res) => res.json())
+    .then((data) => {
       const tbody = document.querySelector("#tabla-cursos tbody");
       tbody.innerHTML = "";
 
-      data.data.forEach(curso => {
+      data.data.forEach((curso) => {
         tbody.innerHTML += `
           <tr>
             <td>${curso.id}</td>
@@ -36,12 +36,12 @@ function cargarCursos() {
 }
 
 function abrirFormulario(id = null) {
+  let popup = alertify.alert(); 
 
-  let popup = alertify.alert(); // Guardamos instancia para cerrarla después
-
-  popup.set({
-    title: id ? "Editar Curso" : "Nuevo Curso",
-    message: `
+  popup
+    .set({
+      title: id ? "Editar Curso" : "Nuevo Curso",
+      message: `
       <form id="form-curso">
         <div class="mb-2">
           <label class="form-label">Nombre</label>
@@ -68,55 +68,52 @@ function abrirFormulario(id = null) {
         </button>
       </form>
     `,
-    onshow: async function () {
+      onshow: async function () {
+        if (id) {
+          const res = await fetch(`/cursos/buscar/${id}`);
+          const { data } = await res.json();
 
-      // Si es EDITAR → cargamos los datos
-      if (id) {
-        const res = await fetch(`/cursos/buscar/${id}`);
-        const { data } = await res.json();
-
-        document.querySelector("input[name=nombre]").value = data.nombre;
-        document.querySelector("input[name=duracion]").value = data.duracion;
-        document.querySelector("input[name=instructor]").value = data.instructor;
-        document.querySelector("input[name=precio]").value = data.precio;
-      }
-
-      // Guardar o editar
-      document.getElementById("btn-guardar-curso").onclick = async function () {
-
-        const form = document.getElementById("form-curso");
-        const datos = Object.fromEntries(new FormData(form));
-
-        const url = id ? `/cursos/editar/${id}` : "/cursos/crear";
-        const method = id ? "PUT" : "POST";
-
-        const res = await fetch(url, {
-          method,
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(datos)
-        });
-
-        const json = await res.json();
-
-        if (json.success) {
-          alertify.success(json.message);
-
-          cargarCursos(); // Actualizar tabla
-
-          popup.close(); // 🔥 Cierra el Alertify correctamente
-        } else {
-          alertify.error("Error al guardar");
+          document.querySelector("input[name=nombre]").value = data.nombre;
+          document.querySelector("input[name=duracion]").value = data.duracion;
+          document.querySelector("input[name=instructor]").value =
+            data.instructor;
+          document.querySelector("input[name=precio]").value = data.precio;
         }
-      };
-    }
-  }).show();
-}
+        // Guardar o editar
+        document.getElementById("btn-guardar-curso").onclick =
+          async function () {
+            const form = document.getElementById("form-curso");
+            const datos = Object.fromEntries(new FormData(form));
 
+            const url = id ? `/cursos/editar/${id}` : "/cursos/crear";
+            const method = id ? "PUT" : "POST";
+
+            const res = await fetch(url, {
+              method,
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify(datos),
+            });
+
+            const json = await res.json();
+
+            if (json.success) {
+              alertify.success(json.message);
+
+              cargarCursos(); 
+
+              popup.close(); 
+            } else {
+              alertify.error("Error al guardar");
+            }
+          };
+      },
+    })
+    .show();
+}
 
 function editar(id) {
   abrirFormulario(id);
 }
-
 
 function eliminar(id) {
   alertify.confirm(
@@ -124,16 +121,16 @@ function eliminar(id) {
     "¿Seguro que deseas eliminar este curso?",
     async function () {
       const res = await fetch(`/cursos/eliminar/${id}`, {
-        method: "DELETE"
+        method: "DELETE",
       });
 
       const json = await res.json();
 
       if (json.success) {
-        alertify.success("Curso eliminado");
+        alertify.success(json.message);
         cargarCursos();
       } else {
-        alertify.error("Error al eliminar");
+        alertify.error(json.error || "Error al guardar");
       }
     },
     function () {
