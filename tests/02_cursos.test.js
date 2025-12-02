@@ -40,10 +40,14 @@ describe("Pruebas CRUD de Cursos", function () {
     // Guardar
     await driver.findElement(By.id("btn-guardar-curso")).click();
 
-    await driver.sleep(1500); 
+    await driver.sleep(1500);
 
     const image = await driver.takeScreenshot();
-    fs.writeFileSync("./tests/screenshots/cursos_create_ok.png", image, "base64");
+    fs.writeFileSync(
+      "./tests/screenshots/cursos_create_ok.png",
+      image,
+      "base64"
+    );
   });
 
   // 2️. PRUEBA NEGATIVA → CREAR CURSO CON PRECIO INVÁLIDO
@@ -56,14 +60,18 @@ describe("Pruebas CRUD de Cursos", function () {
     await driver.findElement(By.name("nombre")).sendKeys("Curso Error");
     await driver.findElement(By.name("duracion")).sendKeys("5");
     await driver.findElement(By.name("instructor")).sendKeys("Instructor Y");
-    await driver.findElement(By.name("precio")).sendKeys("abc"); 
+    await driver.findElement(By.name("precio")).sendKeys("abc");
 
     await driver.findElement(By.id("btn-guardar-curso")).click();
 
     await driver.sleep(1200);
 
     const image = await driver.takeScreenshot();
-    fs.writeFileSync("./tests/screenshots/cursos_invalid_price.png", image, "base64");
+    fs.writeFileSync(
+      "./tests/screenshots/cursos_invalid_price.png",
+      image,
+      "base64"
+    );
   });
 
   // 3️. EDITAR CURSO
@@ -92,23 +100,30 @@ describe("Pruebas CRUD de Cursos", function () {
   // 4️⃣ ELIMINAR CURSO
   // -----------------------------------------------------------
   it("Eliminar curso correctamente", async () => {
-    await driver.get("http://localhost:3000/cursos");
+  await driver.get("http://localhost:3000/cursos");
 
-    // Tomamos el primer botón de eliminar
-    const botonEliminar = await driver.findElement(By.css("button.btn-danger"));
-    botonEliminar.click();
+  // Esperar a que la tabla cargue
+  await driver.wait(
+    until.elementLocated(By.css("#tabla-cursos button.btn-danger")),
+    5000
+  );
 
-    await driver.sleep(1000);
+  const botonEliminar = await driver.findElement(
+    By.css("#tabla-cursos button.btn-danger")
+  );
 
-    // Confirmar alertify
-    const confirmBtn = await driver.findElement(By.css(".ajs-ok"));
-    confirmBtn.click();
+  botonEliminar.click();
+  await driver.sleep(800);
 
-    await driver.sleep(1500);
+  const confirmBtn = await driver.findElement(By.css(".ajs-ok"));
+  confirmBtn.click();
 
-    const image = await driver.takeScreenshot();
-    fs.writeFileSync("./tests/screenshots/cursos_delete_ok.png", image, "base64");
-  });
+  await driver.sleep(1200);
+
+  const image = await driver.takeScreenshot();
+  fs.writeFileSync("./tests/screenshots/cursos_delete_ok.png", image, "base64");
+});
+
 
   // -----------------------------------------------------------
   // 5️⃣ PRUEBA DE LÍMITE → NOMBRE VACÍO
@@ -129,7 +144,10 @@ describe("Pruebas CRUD de Cursos", function () {
     await driver.sleep(1200);
 
     const image = await driver.takeScreenshot();
-    fs.writeFileSync("./tests/screenshots/cursos_limit_fail.png", image, "base64");
+    fs.writeFileSync(
+      "./tests/screenshots/cursos_limit_fail.png",
+      image,
+      "base64"
+    );
   });
-
 });
